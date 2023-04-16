@@ -1,9 +1,10 @@
-import type {
+import {
   CommandInteraction,
   MessageActionRowComponentBuilder,
-  SelectMenuInteraction,
+  StringSelectMenuInteraction,
+  StringSelectMenuBuilder,
 } from "discord.js";
-import { ActionRowBuilder, SelectMenuBuilder } from "discord.js";
+import { ActionRowBuilder } from "discord.js";
 import { Discord, SelectMenuComponent, Slash } from "discordx";
 
 const roles = [
@@ -15,7 +16,7 @@ const roles = [
 @Discord()
 export class Example {
   @SelectMenuComponent({ id: "role-menu" })
-  async handle(interaction: SelectMenuInteraction): Promise<unknown> {
+  async handle(interaction: StringSelectMenuInteraction): Promise<unknown> {
     await interaction.deferReply();
 
     // extract selected value by member
@@ -39,7 +40,7 @@ export class Example {
     await interaction.deferReply();
 
     // create menu for roles
-    const menu = new SelectMenuBuilder()
+    const menu = new StringSelectMenuBuilder()
       .addOptions(roles)
       .setCustomId("role-menu");
 
