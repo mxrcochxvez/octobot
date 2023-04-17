@@ -20,7 +20,7 @@ export class API {
     `;
   }
 
-  @Get()
+  @Get("/guilds")
   guilds(context: Context): void {
     context.body = `${bot.guilds.cache.map((g) => `${g.id}: ${g.name}\n`)}`;
   }
