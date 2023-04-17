@@ -1,4 +1,4 @@
-import { Pagination } from "@discordx/pagination";
+import { Pagination, PaginationType } from "@discordx/pagination";
 import type { CommandInteraction } from "discord.js";
 import { EmbedBuilder } from "discord.js";
 import { Discord, MetadataStorage, Slash } from "discordx";
@@ -32,7 +32,11 @@ export class SlashExample {
       return { embeds: [embed] };
     });
 
-    const pagination = new Pagination(interaction, pages);
+    const pagination = new Pagination(interaction, pages, {
+      type: PaginationType.Button,
+      onTimeout: () => interaction.deleteReply(),
+    });
+
     await pagination.send();
   }
 }
