@@ -4,7 +4,7 @@ import { EmbedBuilder } from "discord.js";
 import { Discord, MetadataStorage, Slash } from "discordx";
 
 @Discord()
-export class SlashExample {
+export class AllCommands {
   // example: pagination for all slash command
   @Slash({
     description: "Pagination for all slash command",

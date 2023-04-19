@@ -3,19 +3,19 @@ import {
   ChannelType,
   EmbedAuthorOptions,
   EmbedBuilder,
+  MessageType,
   TextChannel,
 } from "discord.js";
 import type { ArgsOf, Client } from "discordx";
 import { Discord, On } from "discordx";
+import { LOG_CHANNEL_NAME } from "environment/constants.js";
 
 @Discord()
-export class Example {
-  channelName: string = "logs";
-
+export class ServerEvents {
   @On()
   messageDelete([message]: ArgsOf<"messageDelete">, client: Client): void {
     const cachedChannels = client.channels.cache as unknown as TextChannel[];
-    const logChannel = cachedChannels.find((c) => c.name === this.channelName);
+    const logChannel = cachedChannels.find((c) => c.name === LOG_CHANNEL_NAME);
     const currentGuild = client.guilds.cache.get(message.guild?.id || "");
 
     const deletedEmbed = (
@@ -29,6 +29,8 @@ export class Example {
         .addFields(message)
         .addFields(channel)
         .setTimestamp();
+
+    if (message.author?.bot) return;
 
     if (logChannel !== undefined)
       logChannel.send({
@@ -46,11 +48,10 @@ export class Example {
     else {
       currentGuild?.channels
         .create({
-          name: this.channelName,
+          name: LOG_CHANNEL_NAME,
           type: ChannelType.GuildText,
         })
         .then((fulfilled) => {
-          console.log(fulfilled);
           fulfilled.send({
             embeds: [
               deletedEmbed(

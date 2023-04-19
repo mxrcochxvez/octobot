@@ -4,8 +4,9 @@
     "module": "ESNext",
     "outDir": "build",
     "rootDir": "src",
+    "baseUrl": "./src",
     "strict": true,
-    "moduleResolution": "Node",
+    "moduleResolution": "node",
     "allowSyntheticDefaultImports": true,
 
     "experimentalDecorators": true,

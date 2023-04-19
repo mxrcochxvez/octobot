@@ -4,7 +4,19 @@ import type { Interaction, Message } from "discord.js";
 import { IntentsBitField } from "discord.js";
 import { Client } from "discordx";
 import * as dotenv from "dotenv";
+import { MongoClient } from "mongodb";
 dotenv.config();
+
+const mongoClient = new MongoClient(process.env.DB_TOKEN || "");
+
+async function connectToDatabase() {
+  try {
+    mongoClient.connect();
+    console.log("Connected to MongoDB database");
+  } catch (dbErr) {
+    console.error(dbErr);
+  }
+}
 
 export const bot = new Client({
   // To use only guild command
@@ -15,6 +27,7 @@ export const bot = new Client({
     IntentsBitField.Flags.Guilds,
     IntentsBitField.Flags.GuildMembers,
     IntentsBitField.Flags.GuildMessages,
+    IntentsBitField.Flags.DirectMessages,
     IntentsBitField.Flags.GuildMessageReactions,
     IntentsBitField.Flags.GuildVoiceStates,
     IntentsBitField.Flags.MessageContent,
@@ -90,5 +103,9 @@ async function run() {
 
   // ************* rest api section: end **********
 }
+
+connectToDatabase();
+
+export const db = mongoClient.db("Discord");
 
 run();
